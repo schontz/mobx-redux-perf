@@ -3,11 +3,11 @@ import { v4 } from 'uuid';
 import { fakeTitle, ITodo } from './common';
 
 interface TodosState {
-  todos: ITodo[];
+  todos: Record<string, ITodo>;
 }
 
 const initialState: TodosState = {
-  todos: [],
+  todos: {},
 };
 
 export const todosSlice = createSlice({
@@ -18,58 +18,51 @@ export const todosSlice = createSlice({
       state,
       { payload: { title, done } }: PayloadAction<{ title?: string; done?: boolean }>
     ) => {
-      state.todos.push({
-        id: v4(),
+      const id = v4();
+      state.todos[id] = {
+        id,
         title: title ?? fakeTitle(),
         done: done ?? false,
-      });
+      };
     },
 
     removeTodo: (state, { payload }: PayloadAction<string>) => {
-      const idx = state.todos.findIndex((todo) => todo.id === payload);
-      if (idx > -1) {
-        state.todos.splice(idx, 1);
-      }
+      delete state.todos[payload];
     },
 
     toggleTodo: (state, { payload }: PayloadAction<string>) => {
-      const idx = state.todos.findIndex((todo) => todo.id === payload);
-      if (idx > -1) {
-        state.todos[idx].done = !state.todos[idx].done;
-      }
+      const todo = state.todos[payload];
+      if (todo) todo.done = !todo.done;
     },
 
     clearTodos: (state) => {
-      state.todos = [];
+      state.todos = {};
     },
 
     updateTodo: (
       state,
       { payload: { id, title } }: PayloadAction<{ id: string; title: string }>
     ) => {
-      const idx = state.todos.findIndex((todo) => todo.id === id);
-      if (idx > -1) {
-        state.todos[idx].title = title;
-      }
+      const todo = state.todos[id];
+      if (todo) todo.title = title;
     },
   },
 });
 
-export const todosSelector = createSelector(
-  (state: RootState) => state.todos,
-  (state) => state.todos
+export const allTodosSelector = createSelector(
+  (state: RootState) => state.todoList,
+  (state) => Object.values(state.todos)
 );
 
-export const completedTodosSelector = createSelector(todosSelector, (todos) => {
+export const completedTodosSelector = createSelector(allTodosSelector, (todos) => {
   return todos.filter((todo) => todo.done);
 });
 
-export const incompleteTodosSelector = createSelector(
-  (state: RootState) => state.todos,
-  (todoState) => {
-    return todoState.todos.filter((todo) => !todo.done);
-  }
-);
+export const incompleteTodosSelector = createSelector(allTodosSelector, (todos) => {
+  return todos.filter((todo) => !todo.done);
+});
+
+export const todoSelector = (id: string) => (state: RootState) => state.todoList.todos[id];
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
@@ -78,6 +71,6 @@ export type AppDispatch = typeof store.dispatch;
 
 export const store = configureStore({
   reducer: {
-    todos: todosSlice.reducer,
+    todoList: todosSlice.reducer,
   },
 });

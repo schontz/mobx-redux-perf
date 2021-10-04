@@ -1,11 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
-import { ITodo, CountRender, fakeTitle, rand } from './common';
+import { CountRender, fakeTitle, rand } from './common';
 import { batch, Provider, useDispatch, useSelector } from 'react-redux';
-import { incompleteTodosSelector, RootState, store, todosSelector, todosSlice } from './redux';
+import {
+  incompleteTodosSelector,
+  RootState,
+  store,
+  allTodosSelector,
+  todosSlice,
+  todoSelector,
+} from './redux';
 const { toggleTodo, addTodo, clearTodos, removeTodo, updateTodo } = todosSlice.actions;
 
-const Todo: React.FC<{ todo: ITodo }> = ({ todo }) => {
+const Todo: React.FC<{ id: string }> = ({ id }) => {
+  const todo = useSelector(todoSelector(id));
   return (
     <li className={todo.done ? 'completed' : ''} onClick={() => toggleTodo(todo.id)}>
       {todo.title} <CountRender />
@@ -17,7 +25,7 @@ const TodoList: React.FC = () => {
   const [hideDone, setHideDone] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
 
-  const allTodos = useSelector(todosSelector);
+  const allTodos = useSelector(allTodosSelector);
   const incompleteTodos = useSelector(incompleteTodosSelector);
 
   const todos = hideDone ? incompleteTodos : allTodos;
@@ -38,7 +46,7 @@ const TodoList: React.FC = () => {
 
       <ul>
         {todos.map((todo) => (
-          <Todo todo={todo} key={todo.id} />
+          <Todo id={todo.id} key={todo.id} />
         ))}
       </ul>
       {isSimulating && <RunningSimulator />}
@@ -48,7 +56,7 @@ const TodoList: React.FC = () => {
 
 const RunningSimulator: React.FC = () => {
   const dispatch = useDispatch();
-  const { todos } = useSelector((state: RootState) => state.todos);
+  const todos = useSelector(allTodosSelector);
   const [causeUpdate, setCauseUpdate] = useState(false);
   const timer = useRef<NodeJS.Timer>();
 
@@ -59,31 +67,34 @@ const RunningSimulator: React.FC = () => {
       () =>
         batch(() => {
           console.group('running updates');
+          let length = todos.length;
           new Array(25).fill(0).forEach(() => {
             let idx = -1;
             switch (rand(4)) {
               case 0:
-                idx = rand(todos.length);
+                idx = rand(length);
                 console.log('updating title at', idx, '/', todos.length);
                 dispatch(updateTodo({ id: todos[idx].id, title: fakeTitle() }));
                 break;
               case 1:
-                idx = rand(todos.length);
+                idx = rand(length);
                 console.log('toggling done at', idx, '/', todos.length);
                 dispatch(toggleTodo(todos[idx].id));
                 break;
               case 2:
                 if (todos.length > 7) {
-                  idx = rand(todos.length);
+                  idx = rand(length);
                   console.log('removing at', idx, '/', todos.length);
                   dispatch(removeTodo(todos[idx].id));
                   console.count('change length');
+                  length--;
                 }
                 break;
               case 3:
                 console.log('adding new item');
                 dispatch(addTodo({ title: fakeTitle(), done: rand(2) > 1 }));
                 console.count('change length');
+                length++;
                 break;
             }
           });
@@ -95,7 +106,7 @@ const RunningSimulator: React.FC = () => {
     );
 
     return () => clearTimeout(timer.current!);
-  }, [causeUpdate]);
+  }, [dispatch, todos, causeUpdate]);
 
   return null;
 };
@@ -103,13 +114,15 @@ const RunningSimulator: React.FC = () => {
 function Hydrate() {
   const dispatch = useDispatch();
   useEffect(() => {
-    new Array(1000).fill(0).forEach(() => {
-      dispatch(addTodo({ title: fakeTitle(), done: rand(2) > 1 }));
+    batch(() => {
+      new Array(1000).fill(0).forEach(() => {
+        dispatch(addTodo({ title: fakeTitle(), done: rand(2) > 1 }));
+      });
     });
     return () => {
       dispatch(clearTodos());
     };
-  }, []);
+  }, [dispatch]);
 
   return null;
 }
