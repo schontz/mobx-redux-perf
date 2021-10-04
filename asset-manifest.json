@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/mobx-redux-perf/static/css/main.b93a9fde.chunk.css",
+    "main.js": "/mobx-redux-perf/static/js/main.76f1e2cd.chunk.js",
+    "main.js.map": "/mobx-redux-perf/static/js/main.76f1e2cd.chunk.js.map",
+    "runtime-main.js": "/mobx-redux-perf/static/js/runtime-main.6ad09177.js",
+    "runtime-main.js.map": "/mobx-redux-perf/static/js/runtime-main.6ad09177.js.map",
+    "static/js/2.7c14a46e.chunk.js": "/mobx-redux-perf/static/js/2.7c14a46e.chunk.js",
+    "static/js/2.7c14a46e.chunk.js.map": "/mobx-redux-perf/static/js/2.7c14a46e.chunk.js.map",
+    "static/js/3.6e3316b6.chunk.js": "/mobx-redux-perf/static/js/3.6e3316b6.chunk.js",
+    "static/js/3.6e3316b6.chunk.js.map": "/mobx-redux-perf/static/js/3.6e3316b6.chunk.js.map",
+    "index.html": "/mobx-redux-perf/index.html",
+    "static/css/main.b93a9fde.chunk.css.map": "/mobx-redux-perf/static/css/main.b93a9fde.chunk.css.map",
+    "static/js/2.7c14a46e.chunk.js.LICENSE.txt": "/mobx-redux-perf/static/js/2.7c14a46e.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6ad09177.js",
+    "static/js/2.7c14a46e.chunk.js",
+    "static/css/main.b93a9fde.chunk.css",
+    "static/js/main.76f1e2cd.chunk.js"
+  ]
+}
