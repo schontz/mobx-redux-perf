@@ -21,6 +21,9 @@ const TodoList: React.FC<{ store: TodoStore }> = observer(({ store }) => {
     <>
       <h3>mobx: Re-rendering long lists</h3>
       <p>mobx allows fine-grain updates, which only re-render the necessary components.</p>
+      <p>
+        <a href="https://github.com/schontz/mobx-redux-perf">GitHub repo</a>
+      </p>
       <div>
         Render count: <CountRender />
         &nbsp; | &nbsp; Total items: {todos.length} / {store.todos.length}

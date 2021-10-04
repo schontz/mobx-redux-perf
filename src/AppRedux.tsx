@@ -33,6 +33,10 @@ const TodoList: React.FC = () => {
   return (
     <>
       <h3>Redux: Re-rendering long lists</h3>
+      <p>Redux re-renders the whole list.</p>
+      <p>
+        <a href="https://github.com/schontz/mobx-redux-perf">GitHub repo</a>
+      </p>
       <div>
         Render count: <CountRender />
         &nbsp; | &nbsp; Total items: {todos.length} / {todos.length}
