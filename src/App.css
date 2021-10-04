@@ -1,0 +1,33 @@
+.count-render {
+  font-size: smaller;
+  background: #ccc;
+  color: #666;
+  border-radius: 10px;
+  display: inline-block;
+  padding: 2px 6px;
+  text-align: center;
+}
+
+ul {
+  width: 600px;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+li {
+  padding: 10px;
+  margin-bottom: 0.75em;
+  cursor: pointer;
+  list-style: '-';
+  margin-left: 20px;
+  border-bottom: 1px dashed;
+}
+
+li:hover {
+  background: #efefef;
+}
+
+li.completed {
+  color: #ccc;
+  list-style: 'X';
+}
