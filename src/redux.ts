@@ -33,6 +33,7 @@ export const todosSlice = createSlice({
     toggleTodo: (state, { payload }: PayloadAction<string>) => {
       const todo = state.todos[payload];
       if (todo) todo.done = !todo.done;
+      else console.error('toggleTodo: no todo found', payload);
     },
 
     clearTodos: (state) => {
@@ -45,13 +46,19 @@ export const todosSlice = createSlice({
     ) => {
       const todo = state.todos[id];
       if (todo) todo.title = title;
+      else console.error('updateTodo: no todo found', id);
     },
   },
 });
 
-export const allTodosSelector = createSelector(
-  (state: RootState) => state.todoList,
-  (state) => Object.values(state.todos)
+const todoListSelector = (state: RootState) => state.todoList;
+
+export const allTodosSelector = createSelector(todoListSelector, (state) =>
+  Object.values(state.todos)
+);
+
+export const allTodoIdsSelector = createSelector(todoListSelector, (state) =>
+  Object.keys(state.todos)
 );
 
 export const completedTodosSelector = createSelector(allTodosSelector, (todos) => {
@@ -61,6 +68,10 @@ export const completedTodosSelector = createSelector(allTodosSelector, (todos) =
 export const incompleteTodosSelector = createSelector(allTodosSelector, (todos) => {
   return todos.filter((todo) => !todo.done);
 });
+
+export const incompleteTodoIdsSelector = createSelector(incompleteTodosSelector, (todos) =>
+  todos.map((td) => td.id)
+);
 
 export const todoSelector = (id: string) => (state: RootState) => state.todoList.todos[id];
 

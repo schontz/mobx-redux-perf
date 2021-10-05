@@ -22,7 +22,11 @@ const TodoList: React.FC<{ store: TodoStore }> = observer(({ store }) => {
       <h3>mobx: Re-rendering long lists</h3>
       <p>mobx allows fine-grain updates, which only re-render the necessary components.</p>
       <p>
-        <a href="https://github.com/schontz/mobx-redux-perf">GitHub repo</a>
+        Source:{' '}
+        <a href="https://github.com/schontz/mobx-redux-perf/blob/master/src/AppMobx.tsx">
+          AppMobx.tsx
+        </a>
+        | <a href="https://github.com/schontz/mobx-redux-perf/blob/master/src/mobx.tsx">mobx.tsx</a>
       </p>
       <div>
         Render count: <CountRender />
