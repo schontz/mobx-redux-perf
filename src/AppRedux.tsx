@@ -11,7 +11,7 @@ import {
 } from './redux';
 const { toggleTodo, addTodo, clearTodos, removeTodo, updateTodo } = todosSlice.actions;
 
-const Todo: React.FC<{ id: string }> = ({ id }) => {
+const Todo: React.FC<{ id: string }> = React.memo(({ id }) => {
   const todo = useSelector(todoSelector(id));
   const dispatch = useDispatch();
   return (
@@ -19,7 +19,7 @@ const Todo: React.FC<{ id: string }> = ({ id }) => {
       {todo.title} <CountRender />
     </li>
   );
-};
+});
 
 const TodoList: React.FC = () => {
   const [hideDone, setHideDone] = useState(false);
