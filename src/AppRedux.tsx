@@ -53,11 +53,15 @@ const TodoList: React.FC = () => {
         <button onClick={() => setIsSimulating(!isSimulating)}>Simulate remote updates</button>
       </div>
 
-      <ul>
-        {todos.map((id) => (
-          <Todo id={id} key={id} />
-        ))}
-      </ul>
+      {todos.length ? (
+        <ul>
+          {todos.map((id) => (
+            <Todo id={id} key={id} />
+          ))}
+        </ul>
+      ) : (
+        <div>Loading...</div>
+      )}
       {isSimulating && <RunningSimulator />}
     </>
   );
@@ -122,12 +126,16 @@ const RunningSimulator: React.FC = () => {
 function Hydrate() {
   const dispatch = useDispatch();
   useEffect(() => {
-    batch(() => {
-      new Array(1000).fill(0).forEach(() => {
-        dispatch(addTodo({ title: fakeTitle(), done: rand(2) > 1 }));
+    const timer = setTimeout(() => {
+      batch(() => {
+        new Array(1000).fill(0).forEach(() => {
+          dispatch(addTodo({ title: fakeTitle(), done: rand(2) > 1 }));
+        });
       });
-    });
+    }, rand(1000));
+
     return () => {
+      clearTimeout(timer);
       dispatch(clearTodos());
     };
   }, [dispatch]);

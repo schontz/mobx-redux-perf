@@ -14,7 +14,7 @@ export function fakeTitle() {
   const strs = 'every good boy does fine please excuse my dear aunt susy'.split(' ');
   return new Array(7)
     .fill('')
-    .map(() => strs[rand(strs.length)])
+    .map(() => strs[rand(strs.length - 1)])
     .join(' ');
 }
 

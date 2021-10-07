@@ -1,19 +1,11 @@
-import { makeAutoObservable, action } from 'mobx';
+import { makeAutoObservable, action, flow } from 'mobx';
 import { v4 } from 'uuid';
 import { fakeTitle, rand, ITodo, ITodoList } from './common';
 
 export class TodoItem implements ITodo {
-  constructor(title: string, done = false) {
-    this.setTitle(title);
-    this.setDone(done);
+  constructor(public title: string, public done = false, public readonly id = v4()) {
     makeAutoObservable(this);
   }
-
-  id = v4();
-
-  title = '';
-
-  done = false;
 
   toggleDone() {
     this.setDone(!this.done);
@@ -53,6 +45,33 @@ export class TodoStore implements ITodoList {
 
   findTodo(id: string) {
     return this.todos.find((todo) => todo.id === id);
+  }
+
+  loading = false;
+
+  *loadFromServer() {
+    this.loading = true;
+    this.clearAll();
+
+    const fakeFromServer: ITodo[] = yield new Promise<ITodo[]>((resolve) => {
+      setTimeout(() => {
+        resolve(
+          new Array(1000).fill(0).map(() => ({
+            title: fakeTitle(),
+            id: v4(),
+            done: rand(2) > 1,
+          }))
+        );
+      }, rand(1000));
+    });
+
+    console.log('received data from server:', fakeFromServer);
+
+    fakeFromServer.forEach(({ title, done, id }) => {
+      this.addTodo(new TodoItem(title, done, id));
+    });
+
+    this.loading = false;
   }
 }
 

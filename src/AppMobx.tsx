@@ -35,27 +35,29 @@ const TodoList: React.FC<{ store: TodoStore }> = observer(({ store }) => {
         <label>
           <input type="checkbox" onChange={(e) => setHideDone(e.target.checked)} /> Hide completed?
         </label>
-        &nbsp; | &nbsp;
-        <button onClick={toggleSimulatedUpdates}>Simulate remote updates</button>
+        &nbsp; | &nbsp; Simulate server:{' '}
+        <button onClick={toggleSimulatedUpdates}>toggle streaming</button>{' '}
+        <button onClick={() => store.loadFromServer()} disabled={store.loading}>
+          one-time
+        </button>
       </div>
 
-      <ul>
-        {todos.map((todo) => (
-          <Todo todo={todo} key={todo.id} />
-        ))}
-      </ul>
+      {store.loading ? (
+        <div>Loading...</div>
+      ) : (
+        <ul>
+          {todos.map((todo) => (
+            <Todo todo={todo} key={todo.id} />
+          ))}
+        </ul>
+      )}
     </>
   );
 });
 
 function AppMobx() {
   useEffect(() => {
-    new Array(1000).fill(0).forEach(() => {
-      addTodo(fakeTitle(), rand(2) > 1);
-    });
-    return () => {
-      clearTodos();
-    };
+    store.loadFromServer();
   }, []);
 
   return <TodoList store={store} />;
