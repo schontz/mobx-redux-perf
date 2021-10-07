@@ -1,6 +1,11 @@
-import { makeAutoObservable, action, flow } from 'mobx';
+import { makeAutoObservable, action, configure } from 'mobx';
 import { v4 } from 'uuid';
 import { fakeTitle, rand, ITodo, ITodoList } from './common';
+
+configure({
+  enforceActions: process.env.NODE_ENV === 'test' ? 'observed' : 'always',
+  observableRequiresReaction: process.env.NODE_ENV === 'production',
+});
 
 export class TodoItem implements ITodo {
   constructor(public title: string, public done = false, public readonly id = v4()) {

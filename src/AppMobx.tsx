@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { observer } from 'mobx-react-lite';
-import { addTodo, clearTodos, store, toggleTodo, toggleSimulatedUpdates, TodoStore } from './mobx';
-import { ITodo, CountRender, fakeTitle, rand } from './common';
+import { store, toggleTodo, toggleSimulatedUpdates, TodoStore } from './mobx';
+import { ITodo, CountRender } from './common';
 
 const Todo: React.FC<{ todo: ITodo }> = observer(({ todo }) => {
   return (
