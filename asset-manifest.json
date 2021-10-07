@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/mobx-redux-perf/static/css/main.b93a9fde.chunk.css",
-    "main.js": "/mobx-redux-perf/static/js/main.0a62fadd.chunk.js",
-    "main.js.map": "/mobx-redux-perf/static/js/main.0a62fadd.chunk.js.map",
+    "main.js": "/mobx-redux-perf/static/js/main.8237b18f.chunk.js",
+    "main.js.map": "/mobx-redux-perf/static/js/main.8237b18f.chunk.js.map",
     "runtime-main.js": "/mobx-redux-perf/static/js/runtime-main.d76eafba.js",
     "runtime-main.js.map": "/mobx-redux-perf/static/js/runtime-main.d76eafba.js.map",
     "static/js/2.4c76a555.chunk.js": "/mobx-redux-perf/static/js/2.4c76a555.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.d76eafba.js",
     "static/js/2.4c76a555.chunk.js",
     "static/css/main.b93a9fde.chunk.css",
-    "static/js/main.0a62fadd.chunk.js"
+    "static/js/main.8237b18f.chunk.js"
   ]
 }
