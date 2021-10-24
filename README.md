@@ -4,7 +4,7 @@ Demo: https://schontz.github.io/mobx-redux-perf/
 
 I wanted to test some perf differences for redux and mobx.
 
-So far, I am testing updating long lists of data. mobx performs really well with no optimizations. Redux was very slow out the gate, and after some performance ops it is better, but not anywhere near mobx. Maybe someone with more redux knowledge can speed it up, but I'm linking the following:
+So far, I am testing updating long lists of data. mobx performs really well with no optimizations. Redux was very slow out the gate, and after some targeted performance ops it is performs about the same. Maybe someone with more redux knowledge can speed it up, but I'm liking the following:
 
 1. mobx "just works" with great perf.
 2. You can write regular JavaScript with better modularization (though createSlice helps a lot).
